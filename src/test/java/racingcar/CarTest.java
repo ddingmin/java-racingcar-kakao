@@ -1,56 +1,57 @@
 package racingcar;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CarTest {
+    @ParameterizedTest
+    @ValueSource(strings = {"a", "bb", "tom", "mark", "brown"})
+    void 자동차는_5자_이하의_이름을_가진다(String carName) {
+        Car car = new Car(carName);
 
-    @Test
-    void 이름_길이가_다섯_글자_이하면_정상적으로_생성한다() {
-        Car car = new Car("Mark");
-
-        assertThat(car.getName()).isEqualTo("Mark");
+        assertThat(car.getName()).isEqualTo(carName);
     }
 
-    @Test
-    void 이름_길이가_다섯_글자_초과면_예외를_던진다() {
-        assertThatThrownBy(() -> new Car("Programmer"))
-                .isInstanceOf(IllegalArgumentException.class);
+    @ParameterizedTest
+    @ValueSource(strings = {"bigName", "longName", "longestName"})
+    void 자동차의_이름이_5글자_넘는다면_에러가_발생한다(String carName) {
+        assertThatThrownBy(
+                () -> new Car(carName)
+        ).isInstanceOf(RuntimeException.class);
     }
 
-    @Test
-    void 자동차가_전진한다() {
-        Car car = new Car("Move");
-        int previousPosition = car.getPosition();
-
-        car.move(5);
-        assertThat(car.getPosition()).isEqualTo(previousPosition + 1);
+    @ParameterizedTest
+    @NullAndEmptySource
+    void 자동차의_이름이_빈값_또는_널이라면_에러가_발생한다(String carName) {
+        assertThatThrownBy(
+                () -> new Car(carName)
+        ).isInstanceOf(RuntimeException.class);
     }
 
-    @Test
-    void 숫자가_작으면_자동차가_전진하지_않는다() {
-        Car car = new Car("NoMov");
-        int previousPosition = car.getPosition();
+    @ParameterizedTest
+    @ValueSource(ints = {4, 5, 6, 7, 8, 9})
+    void 자동차는_4이상의_랜덤값일_경우_전진한다(int randomNumber) {
+        int position = Car.INIT_POSITION;
+        Car car = new Car("mark", position);
 
-        car.move(0);
-        assertThat(car.getPosition()).isEqualTo(previousPosition);
+        car.move(randomNumber);
+
+        assertThat(car.getPosition()).isEqualTo(position + 1);
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3})
+    void 자동차는_3이하의_랜덤값일_경우_멈춘다(int randomNumber) {
+        int position = Car.INIT_POSITION;
+        Car car = new Car("mark", position);
 
-    @Test
-    void 생성_직후_문자열화하면_디폴트_값을_출력한다() {
-        Car car = new Car("Mark");
+        car.move(randomNumber);
 
-        assertThat(car.toString()).isEqualTo("Mark : -");
-    }
-
-    @Test
-    void 문자열화하면_자신의_이름과_함께_위치를_반환한다() {
-        Car car = new Car("Mark");
-        car.move(7);
-
-        assertThat(car.toString()).isEqualTo("Mark : --");
+        assertThat(car.getPosition()).isEqualTo(position);
     }
 }

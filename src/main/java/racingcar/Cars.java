@@ -1,6 +1,9 @@
 package racingcar;
 
+import racingcar.infra.RandomGeneratable;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +35,14 @@ public class Cars {
         return this.cars.stream()
                 .filter(it -> farthestPosition == it.getPosition())
                 .collect(Collectors.toList());
+    }
+
+    public List<Car> getAll() {
+        return Collections.unmodifiableList(this.cars);
+    }
+
+    public void moveAll(RandomGeneratable randomGenerator) {
+        this.cars.forEach(it -> it.move(randomGenerator.generate(0, 10)));
     }
 
     private int getFarthestPosition() {

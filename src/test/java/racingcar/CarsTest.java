@@ -3,6 +3,7 @@ package racingcar;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import racingcar.infra.RandomGeneratable;
 
 import java.util.List;
 
@@ -35,5 +36,40 @@ public class CarsTest {
         ));
 
         assertThat(cars.getFarthest()).isEqualTo(List.of(farthestCar));
+    }
+
+    @Test
+    void 모든_자동차들을_반환한다() {
+        List<Car> carList = getStandardCars();
+        Cars cars = new Cars(carList);
+
+        assertThat(cars.getAll())
+                .isEqualTo(carList);
+    }
+
+    @Test
+    void 모든_자동차들을_이동시킨다() {
+        RandomGeneratable output4Generator = new RandomGeneratable() {
+            @Override
+            public int generate(int min, int max) {
+                return 4;
+            }
+        };
+        Cars cars = new Cars(getStandardCars());
+
+        cars.moveAll(output4Generator);
+
+        assertThat(cars.getAll().stream()
+                .mapToInt(Car::getPosition)
+                .allMatch(it -> it == 2))
+                .isTrue();
+    }
+
+    private List<Car> getStandardCars() {
+        return List.of(
+                new Car("pobi", 1),
+                new Car("honux", 1),
+                new Car("crong", 1)
+        );
     }
 }

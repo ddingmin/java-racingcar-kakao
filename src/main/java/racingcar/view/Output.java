@@ -1,11 +1,11 @@
 package racingcar.view;
 
-import racingcar.Car;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Output {
+
+    public static final String POSITION_CHARACTER = "-";
 
     public static void printGetRacingCars() {
         System.out.println("경주할 자동차 이름을 입력하세요(이름은 쉼표(,)를 기준으로 구분).");
@@ -19,16 +19,21 @@ public class Output {
         System.out.println("\n실행 결과");
     }
 
-    public static void printResultStep(List<Car> cars) {
-        cars.forEach(it -> System.out.println(it.getName() + " : " + "-".repeat(it.getPosition())));
-        System.out.println();
+    public static void printResultStep(List<String> carNames, List<Integer> carPositions) {
+        validateSize(carNames, carPositions);
+
+        for (int i = 0; i < carNames.size(); i++) {
+            System.out.println(carNames.get(i) + " : " + POSITION_CHARACTER.repeat(carPositions.get(i)));
+        }
     }
 
-    public static void printWinner(List<Car> cars) {
-        System.out.println(
-                cars.stream()
-                        .map(Car::getName)
-                        .collect(Collectors.joining(", "))
-                        + "가 최종 우승했습니다.");
+    public static void printWinner(List<String> carNames) {
+        System.out.println(String.join(", ", carNames) + "가 최종 우승했습니다.");
+    }
+
+    private static void validateSize(List<String> carNames, List<Integer> carPositions) {
+        if (carNames.size() != carPositions.size()) {
+            throw new IllegalArgumentException("자동차 이름의 수와 위치 수가 다릅니다.");
+        }
     }
 }

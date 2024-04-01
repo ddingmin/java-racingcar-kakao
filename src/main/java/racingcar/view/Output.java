@@ -23,8 +23,8 @@ public class Output {
     }
 
     public static void printResultStep(List<CarDto> cars) {
-        for (int i = 0; i < cars.size(); i++) {
-            System.out.println(cars.get(i).getName() + " : " + POSITION_CHARACTER.repeat(cars.get(i).getPosition()));
+        for (CarDto car : cars) {
+            System.out.println(car.getName() + " : " + POSITION_CHARACTER.repeat(car.getPosition()));
         }
         System.out.println();
     }

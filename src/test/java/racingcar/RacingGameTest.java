@@ -18,7 +18,7 @@ public class RacingGameTest {
         RacingGame game = new RacingGame("pobi,crong,honux", 5, randomGenerator);
 
         assertAll(
-                () -> assertEquals(game.getCarsStatus(),
+                () -> assertEquals(game.getCars(),
                         List.of(
                                 new Car("pobi"),
                                 new Car("crong"),

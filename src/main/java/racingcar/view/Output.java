@@ -1,7 +1,10 @@
 package racingcar.view;
 
 
+import racingcar.domain.dto.CarDto;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Output {
 
@@ -19,22 +22,18 @@ public class Output {
         System.out.println("\n실행 결과");
     }
 
-    public static void printResultStep(List<String> carNames, List<Integer> carPositions) {
-        validateSize(carNames, carPositions);
-
-        for (int i = 0; i < carNames.size(); i++) {
-            System.out.println(carNames.get(i) + " : " + POSITION_CHARACTER.repeat(carPositions.get(i)));
+    public static void printResultStep(List<CarDto> cars) {
+        for (int i = 0; i < cars.size(); i++) {
+            System.out.println(cars.get(i).getName() + " : " + POSITION_CHARACTER.repeat(cars.get(i).getPosition()));
         }
         System.out.println();
     }
 
-    public static void printWinner(List<String> carNames) {
-        System.out.println(String.join(", ", carNames) + "가 최종 우승했습니다.");
+    public static void printWinner(List<CarDto> cars) {
+        String winners = cars.stream()
+                .map(CarDto::getName)
+                .collect(Collectors.joining(", "));
+        System.out.println(winners + "가 최종 우승했습니다.");
     }
 
-    private static void validateSize(List<String> carNames, List<Integer> carPositions) {
-        if (carNames.size() != carPositions.size()) {
-            throw new IllegalArgumentException("자동차 이름의 수와 위치 수가 다릅니다.");
-        }
-    }
 }

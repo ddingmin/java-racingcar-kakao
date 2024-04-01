@@ -28,7 +28,7 @@ public class RacingGame {
         cars.moveAll(randomGenerator);
     }
 
-    public List<Car> getCarsStatus() {
+    public List<Car> getCars() {
         return this.cars.getAll();
     }
 

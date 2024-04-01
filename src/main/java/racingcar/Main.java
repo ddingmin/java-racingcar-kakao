@@ -1,6 +1,7 @@
 package racingcar;
 
 import racingcar.domain.Car;
+import racingcar.domain.dto.CarDto;
 import racingcar.infra.RandomGeneratable;
 import racingcar.infra.RandomGenerator;
 import racingcar.view.Input;
@@ -23,22 +24,27 @@ public class Main {
 
         playRounds(tryCount, racingGame);
 
-        Output.printWinner(racingGame.getWinner().stream().map(Car::getName).collect(Collectors.toList()));
+        List<Car> winners = racingGame.getWinner();
+        Output.printWinner(winners.stream()
+                .map(it -> CarDto.from(it.getName(), it.getPosition()))
+                .collect(Collectors.toList()));
     }
 
     private static void playRounds(int tryCount, RacingGame racingGame) {
         Output.printResultTitle();
 
-        List<Car> status = racingGame.getCarsStatus();
-        Output.printResultStep(status.stream().map(Car::getName).collect(Collectors.toList()),
-                status.stream().map(Car::getPosition).collect(Collectors.toList()));
+        List<Car> cars = racingGame.getCars();
+        Output.printResultStep(cars.stream()
+                .map(it -> CarDto.from(it.getName(), it.getPosition()))
+                .collect(Collectors.toList()));
 
         for (int i = 0; i < tryCount; i++) {
             racingGame.playRound();
 
-            status = racingGame.getCarsStatus();
-            Output.printResultStep(status.stream().map(Car::getName).collect(Collectors.toList()),
-                    status.stream().map(Car::getPosition).collect(Collectors.toList()));
+            cars = racingGame.getCars();
+            Output.printResultStep(cars.stream()
+                    .map(it -> CarDto.from(it.getName(), it.getPosition()))
+                    .collect(Collectors.toList()));
         }
     }
 }

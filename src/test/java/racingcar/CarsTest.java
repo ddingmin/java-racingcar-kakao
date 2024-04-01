@@ -65,6 +65,24 @@ public class CarsTest {
                 .isTrue();
     }
 
+    @Test
+    void 조건에_부합하지_않은_경우_자동차들이_이동하지_않는다() {
+        RandomGeneratable output0Generator = new RandomGeneratable() {
+            @Override
+            public int generate(int min, int max) {
+                return 0;
+            }
+        };
+        Cars cars = new Cars(getStandardCars());
+
+        cars.moveAll(output0Generator);
+
+        assertThat(cars.getAll().stream()
+                .mapToInt(Car::getPosition)
+                .allMatch(it -> it == 1))
+                .isTrue();
+    }
+
     private List<Car> getStandardCars() {
         return List.of(
                 new Car("pobi", 1),

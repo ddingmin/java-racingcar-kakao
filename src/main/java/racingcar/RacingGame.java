@@ -1,5 +1,7 @@
 package racingcar;
 
+import racingcar.domain.Car;
+import racingcar.domain.Cars;
 import racingcar.infra.RandomGeneratable;
 
 import java.util.List;

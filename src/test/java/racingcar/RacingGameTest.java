@@ -1,6 +1,7 @@
 package racingcar;
 
 import org.junit.jupiter.api.Test;
+import racingcar.domain.Car;
 import racingcar.infra.RandomGeneratable;
 import racingcar.infra.RandomGenerator;
 

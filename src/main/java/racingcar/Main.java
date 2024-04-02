@@ -1,6 +1,5 @@
 package racingcar;
 
-import racingcar.domain.Car;
 import racingcar.domain.TryCount;
 import racingcar.domain.dto.CarDto;
 import racingcar.infra.RandomGeneratable;
@@ -9,7 +8,6 @@ import racingcar.view.Input;
 import racingcar.view.Output;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -25,27 +23,20 @@ public class Main {
 
         playRounds(tryCount, racingGame);
 
-        List<Car> winners = racingGame.getWinner();
-        Output.printWinner(winners.stream()
-                .map(it -> CarDto.from(it.getName(), it.getPosition()))
-                .collect(Collectors.toList()));
+        List<CarDto> winners = racingGame.getWinner();
+        Output.printWinner(winners);
     }
 
     private static void playRounds(TryCount tryCount, RacingGame racingGame) {
         Output.printResultTitle();
 
-        List<Car> cars = racingGame.getCars();
-        Output.printResultStep(cars.stream()
-                .map(it -> CarDto.from(it.getName(), it.getPosition()))
-                .collect(Collectors.toList()));
-
+        List<CarDto> cars = racingGame.getCars();
+        Output.printResultStep(cars);
         for (int i = 0; i < tryCount.getCount(); i++) {
             racingGame.playRound();
 
             cars = racingGame.getCars();
-            Output.printResultStep(cars.stream()
-                    .map(it -> CarDto.from(it.getName(), it.getPosition()))
-                    .collect(Collectors.toList()));
+            Output.printResultStep(cars);
         }
     }
 }
